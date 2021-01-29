@@ -11,6 +11,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  /*Alex lägger till kommentar 11:32*/
 
  //Alex kommenterar
+ 
 public class App {
     public static void main(String[] args) {
         JFrame main = new JFrame("Invaders");

@@ -83,7 +83,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         }
 
         // draw the space ship
-        g.setColor(Color.black);
+        g.setColor(Color.green);
         g.fillRect(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height);
     }
 
