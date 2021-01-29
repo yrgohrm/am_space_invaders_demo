@@ -6,6 +6,10 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  * how to draw on a surface in a frame using Swing/AWT.
  * 
  */
+
+
+ /*Alex lägger till kommentar 11:32*/
+ 
 public class App {
     public static void main(String[] args) {
         JFrame main = new JFrame("Invaders");
