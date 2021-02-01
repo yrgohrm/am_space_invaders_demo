@@ -1,3 +1,6 @@
+#Code Workspace
+*.code-workspace
+
 # Compiled class file
 *.class
 
