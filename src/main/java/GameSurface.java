@@ -149,10 +149,6 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // this event triggers when we press a key and then
         // we will move the space ship up if the game is not over yet
 
-        if (gameOver) {
-          return;
-      }
-
       final int minHeight = 10;
       final int kc = e.getKeyCode();
 
