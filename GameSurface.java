@@ -49,9 +49,16 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     }
 
     private void addAlien(final int width, final int height) {
-        int x = ThreadLocalRandom.current().nextInt(width / 2, width - 30);
-        int y = ThreadLocalRandom.current().nextInt(20, height - 30);
-        aliens.add(new Rectangle(x, y, 10, 10));
+        //int x = ThreadLocalRandom.current().nextInt(width / 2, width - 30);
+        //int y = ThreadLocalRandom.current().nextInt(20, height - 30);
+        int x = width;
+        int y = 0;
+        int xx = width;
+        int yy = height/2;
+
+        aliens.add(new Rectangle(x, y, 60, 300));
+        aliens.add(new Rectangle(xx, yy, 60, 400));
+
     }
 
     /**
