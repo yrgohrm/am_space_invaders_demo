@@ -27,7 +27,7 @@ public class Restart extends JFrame implements ActionListener{
 		getContentPane().setBackground(Color.blue);
 		Font font = new Font("SansSerif", Font.BOLD, 16);
 		restartButton.setFont(font);
-		setSize(100, 50);
+		setSize(300, 150);
 		restartButton.addActionListener(this);
 		restartButton.setEnabled(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -41,6 +41,10 @@ public class Restart extends JFrame implements ActionListener{
 			System.exit(0);
 		}
 		
+	}
+	
+	public static void main(String[] args) {
+		Restart restart = new Restart();
 	}
 	
 	
