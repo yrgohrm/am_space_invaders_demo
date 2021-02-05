@@ -2,15 +2,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -36,7 +42,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addAlien(width, height);
         }
 
-        this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
+        this.spaceShip = new Rectangle(10, width / 2 - 15, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
@@ -45,7 +51,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        repaint(g);
+        try {
+			repaint(g);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     private void addAlien(final int width, final int height) {
@@ -59,8 +70,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
      * on the graphics surface.
      * 
      * @param g the graphics to paint on
+     * @throws IOException 
      */
-    private void repaint(Graphics g) {
+    private void repaint(Graphics g) throws IOException {
         final Dimension d = this.getSize();
 
         if (gameOver) {
@@ -83,8 +95,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         }
 
         // draw the space ship
-        g.setColor(Color.black);
-        g.fillRect(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height);
+        Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
+        g.drawImage(img, spaceShip.x, spaceShip.y, null);
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 40, 28, null);
+        bGr.dispose();
     }
 
     @Override
