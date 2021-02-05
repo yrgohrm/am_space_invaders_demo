@@ -33,12 +33,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         this.aliens = new ArrayList<>();
 
         for (int i = 0; i < 5; ++i) {
-            addAlien(width, height);
+            addWarpPipe(width, height);
         }
 
         this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
 
-        this.timer = new Timer(20, this);
+        this.timer = new Timer(1, this);
         this.timer.start();
     }
 
@@ -48,7 +48,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         repaint(g);
     }
 
-    private void addAlien(final int width, final int height) {
+    private void addWarpPipe(final int width, final int height) {
         //int x = ThreadLocalRandom.current().nextInt(width / 2, width - 30);
         //int y = ThreadLocalRandom.current().nextInt(20, height - 30);
         int x = width;
@@ -126,7 +126,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // add new aliens for every one that was removed
         for (int i = 0; i < toRemove.size(); ++i) {
             Dimension d = getSize();
-            addAlien(d.width, d.height);
+            addWarpPipe(d.width, d.height);
         }
 
         this.repaint();
