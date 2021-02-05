@@ -24,6 +24,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private List<Rectangle> aliens;
     private Rectangle spaceShip;
+    private int jumpRemaining;
+    
+
     public GameSurface(final int width, final int height) {
         this.gameOver = false;
         this.aliens = new ArrayList<>();
@@ -105,9 +108,24 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             Dimension d = getSize();
             addWarpPipe(d.width, d.height);
         }
-        spaceShip.translate(0, 1);
+
+        // jumpRemaining is an instance variable, everytime
+        // the bird jumps its set to 30. Every frame/actionPerformed
+        // the bird jumps 5px in Y-direction until jumpRemaining
+        // becomes 0. This is because we want the bird to jump
+        // in a smooth motion.
+        if (jumpRemaining > 0) {
+            spaceShip.translate(0, -5);
+            jumpRemaining = jumpRemaining - 3;
+        }
+        // After every jump, the gravity starts affecting
+        // the bird again. 
+        else {
+            spaceShip.translate(0, 5);
+        }
         this.repaint();
     }
+
     @Override
     public void keyReleased(KeyEvent e) {
         //
@@ -116,10 +134,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     public void keyTyped(KeyEvent e) {
         // do nothing
     }
+
     @Override
     public void keyPressed(KeyEvent e) {
-                // this event triggers when we release a key and then
-        // we will move the space ship if the game is not over yet
+        // this event triggers when we press a key
+        // in this case Space bar is for jumping
+
         if (gameOver) {
             return;
         }
@@ -127,7 +147,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final int maxHeight = this.getSize().height - spaceShip.height - 10;
         final int kc = e.getKeyCode();
         if (kc == KeyEvent.VK_SPACE && spaceShip.y > minHeight && spaceShip.y < maxHeight) {
-                spaceShip.translate(0, -30);
+                jumpRemaining = 30;
         }
     }
 }
