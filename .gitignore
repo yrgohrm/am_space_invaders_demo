@@ -29,5 +29,5 @@ hs_err_pi
 *.project
 .settings/
 
-#Naoyas test file
-src/main/java/StartMenu.java
+#Maven
+target/
