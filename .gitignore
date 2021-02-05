@@ -23,11 +23,11 @@
 *.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-/target/
+hs_err_pi
 #mac
 *.classpath
 *.project
 .settings/
 
-
+#Naoyas test file
+src/main/java/StartMenu.java
