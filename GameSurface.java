@@ -34,7 +34,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addWarpPipe(width, height);
         }
         this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
-        this.timer = new Timer(20, this);
+        this.timer = new Timer(2, this);
         this.timer.start();
     }
     @Override
@@ -115,13 +115,13 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // becomes 0. This is because we want the bird to jump
         // in a smooth motion.
         if (jumpRemaining > 0) {
-            spaceShip.translate(0, -5);
-            jumpRemaining = jumpRemaining - 3;
+            spaceShip.translate(0, -2);
+            jumpRemaining = jumpRemaining - 2;
         }
         // After every jump, the gravity starts affecting
         // the bird again. 
         else {
-            spaceShip.translate(0, 5);
+            spaceShip.translate(0, 1);
         }
         this.repaint();
     }
