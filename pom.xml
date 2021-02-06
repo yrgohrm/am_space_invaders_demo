@@ -47,7 +47,7 @@
 					<archive>
 						<manifest>
 							<mainClass>
-								App
+								se.mns.App
 							</mainClass>
 						</manifest>
 					</archive>
