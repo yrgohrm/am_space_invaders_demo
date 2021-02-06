@@ -20,14 +20,14 @@ public class Restart extends JFrame implements ActionListener{
 	private static final long serialVersionUID = -1156863117874978139L;
 	
 	private JButton restartButton = new JButton("Starta om");
-  private JLabel hsLabel = new JLabel("Antal poäng: 2");
+  private JLabel hsLabel = new JLabel("Antal poäng: 2", JLabel.CENTER);
 	
 	public Restart() {
 		
 		setLayout(new GridLayout(2,1));
     add(hsLabel);
 		add(restartButton);
-		getContentPane().setBackground(Color.blue);
+		getContentPane().setBackground(Color.yellow);
 		Font font = new Font("SansSerif", Font.BOLD, 16);
 		restartButton.setFont(font);
 		hsLabel.setFont(font);
