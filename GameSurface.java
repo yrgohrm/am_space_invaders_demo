@@ -27,6 +27,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private List<Rectangle> aliens;
     private Rectangle spaceShip;
+    int yMotion;
 
     public GameSurface(final int width, final int height) {
         this.gameOver = false;
@@ -36,7 +37,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addAlien(width, height);
         }
 
-        this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
+        this.spaceShip = new Rectangle(10, width/2+120, 30, 20);
 
         this.timer = new Timer(20, this);
         this.timer.start();
@@ -123,6 +124,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         }
 
         this.repaint();
+        
+        spaceShip.y -= yMotion;
     }
 
     @Override
@@ -138,12 +141,18 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final int maxHeight = this.getSize().height - spaceShip.height - 10;
         final int kc = e.getKeyCode();
 
-        if (kc == KeyEvent.VK_SPACE && spaceShip.y > minHeight) {
-            spaceShip.translate(0, -10);
+        if (kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
+            spaceShip.translate(10, -70);
+            jump();
         }
- /*       else if (kc == KeyEvent.VK_DOWN && spaceShip.y < maxHeight) {
-            spaceShip.translate(0, 10);
-        } */
+    }
+    
+    public void jump() {
+    	if (yMotion < 0) {
+			yMotion = 0;
+		}
+    	yMotion -= 5;
+
     }
     
     @Override
