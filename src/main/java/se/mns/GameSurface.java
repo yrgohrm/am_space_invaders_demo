@@ -124,19 +124,17 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addAlien(d.width, d.height);
         }
 
+        final int maxHeight = this.getSize().height - spaceShip.height - 10;
+        if (spaceShip.y < maxHeight) {
+            spaceShip.translate(0, 20);
+        }
+
         this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (gameOver) {
-            return;
-        }
-
-        final int maxHeight = this.getSize().height - spaceShip.height - 10;
-        if (spaceShip.y < maxHeight) {
-            spaceShip.translate(0, 20);
-        }
+        // do nothing
     }
 
     @Override
@@ -153,18 +151,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             return;
         }
 
+        final int minHeight = 10;
         final int kc = e.getKeyCode();
 
-        if (kc == KeyEvent.VK_SPACE) {
-            final int minHeight = 10;
-            if(spaceShip.y > minHeight) {
-                spaceShip.translate(0, -10);
-            }
-        } else {
-            final int maxHeight = this.getSize().height - spaceShip.height - 10;
-            if (spaceShip.y < maxHeight) {
-                spaceShip.translate(0, 20);
-            }
+        if (kc == KeyEvent.VK_SPACE && spaceShip.y > minHeight) {
+            spaceShip.translate(0, -10);
         }
     }
 }
