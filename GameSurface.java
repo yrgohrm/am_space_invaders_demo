@@ -108,11 +108,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.cyan);
 		g.fillRect(0, 0, d.width, d.height);
 
-		// draw the aliens
-		for (Rectangle alien : aliens) {
-			g.setColor(Color.green);
-			g.fillRect(alien.x, alien.y, alien.width, alien.height);
-		}
+		 // draw the aliens
+        for (Rectangle alien : aliens) {
+            g.setColor(Color.red);
+            g.fillRect(alien.x, alien.y, alien.width, alien.height);
+        }
 
 		// draw the space ship
 		Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
