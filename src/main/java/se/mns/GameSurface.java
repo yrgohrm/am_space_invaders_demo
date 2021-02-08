@@ -18,8 +18,8 @@ import javax.swing.Timer;
 
 /**
  * A simple panel with a space invaders "game" in it. This is just to
- * demonstrate the bare minimum of stuff than can be done drawing on
- * a panel. This is by no means very good code.
+ * demonstrate the bare minimum of stuff than can be done drawing on a panel.
+ * This is by no means very good code.
  * 
  */
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
@@ -38,7 +38,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addAlien(width, height);
         }
 
-        this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
+        this.spaceShip = new Rectangle(20, width / 2 - 15, 30, 20);
 
         this.timer = new Timer(200, this);
         this.timer.start();
@@ -57,8 +57,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     }
 
     /**
-     * Call this method when the graphics needs to be repainted
-     * on the graphics surface.
+     * Call this method when the graphics needs to be repainted on the graphics
+     * surface.
      * 
      * @param g the graphics to paint on
      */
@@ -67,10 +67,10 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         if (gameOver) {
             g.setColor(Color.red);
-            g.fillRect(0, 0, d.width, d.height);    
+            g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("Game over!", 20, d.width/2-24);
+            g.drawString("Game over!", 20, d.width / 2 - 24);
             return;
         }
 
@@ -124,23 +124,21 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             addAlien(d.width, d.height);
         }
 
-      if (gameOver) {
-          return;
-      }
-
-      final int maxHeight = this.getSize().height - spaceShip.height - 10;
-      if(spaceShip.y < maxHeight){
-        spaceShip.translate(0, 20);
-      }
-
         this.repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        // do nothing
+        if (gameOver) {
+            return;
+        }
+
+        final int maxHeight = this.getSize().height - spaceShip.height - 10;
+        if (spaceShip.y < maxHeight) {
+            spaceShip.translate(0, 20);
+        }
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {
         // do nothing
@@ -152,14 +150,21 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // we will move the space ship up if the game is not over yet
 
         if (gameOver) {
-          return;
-      }
+            return;
+        }
 
-      final int minHeight = 10;
-      final int kc = e.getKeyCode();
+        final int kc = e.getKeyCode();
 
-      if (kc == KeyEvent.VK_SPACE && spaceShip.y > minHeight) {
-        spaceShip.translate(0, -10);
-      }
+        if (kc == KeyEvent.VK_SPACE) {
+            final int minHeight = 10;
+            if(spaceShip.y > minHeight) {
+                spaceShip.translate(0, -10);
+            }
+        } else {
+            final int maxHeight = this.getSize().height - spaceShip.height - 10;
+            if (spaceShip.y < maxHeight) {
+                spaceShip.translate(0, 20);
+            }
+        }
     }
 }
