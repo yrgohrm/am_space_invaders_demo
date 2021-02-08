@@ -22,8 +22,8 @@ import javax.swing.Timer;
 
 /**
  * A simple panel with a space invaders "game" in it. This is just to
- * demonstrate the bare minimum of stuff than can be done drawing on a panel.
- * This is by no means very good code.
+ * demonstrate the bare minimum of stuff than can be done drawing on
+ * a panel. This is by no means very good code.
  * 
  */
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
@@ -31,7 +31,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 	private boolean gameOver;
 	private Timer timer;
-	private ArrayList<Rectangle> aliens;
+	private List<Rectangle> aliens;
 	private Rectangle spaceShip;
 	int yMotion;
 
@@ -39,44 +39,44 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		this.gameOver = false;
 		this.aliens = new ArrayList<>();
 
-			addAlien(width, height);
-		
-		this.spaceShip = new Rectangle(20, width / 2 - 15, 30, 20);
+		addAlien(width, height);
+
+		this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 30, 20);
 
 		this.timer = new Timer(20, this);
 		this.timer.start();
 	}
 
-	 @Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        try {
-				repaint(g);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    }
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		try {
+			repaint(g);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void addAlien(final int width, final int height) {
 		int randomHeight = ThreadLocalRandom.current().nextInt(height / 2);
 		int gap = 80;
 
 		int x = width;
-		int y = 0; 
+		int y = 0;
 
 		int x2 = width;
 		int y2 = height - randomHeight;
 
 		int topalienHeight = height - (randomHeight + gap);
-		
+
 		// top alien
 		aliens.add(new Rectangle(x, y, 50, topalienHeight));
-		
-		System.out.println("top alien:\t" + "x: " + x + "\ty: "+ y + "\theight: "+ topalienHeight);
+
+		System.out.println("top alien:\t" + "x: " + x + "\ty: " + y + "\theight: " + topalienHeight);
 		// bottom alien
 		aliens.add(new Rectangle(x2, y2, 50, randomHeight));
-		System.out.println("bottom alien:\t" + "x:" + x2 + "\ty:"+ y2 + "\theight:"+ randomHeight);
+		System.out.println("bottom alien:\t" + "x:" + x2 + "\ty:" + y2 + "\theight:" + randomHeight);
 
 	}
 
@@ -85,6 +85,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	 * surface.
 	 * 
 	 * @param g the graphics to paint on
+	 * @throws IOException
 	 */
 	private void repaint(Graphics g) throws IOException {
 		final Dimension d = this.getSize();
@@ -109,12 +110,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// draw the space ship
-        Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
-        g.drawImage(img, spaceShip.x, spaceShip.y, null);
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 40, 28, null);
-        bGr.dispose();
+		Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
+		g.drawImage(img, spaceShip.x, spaceShip.y, null);
+		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D bGr = bimage.createGraphics();
+		bGr.drawImage(img, 40, 28, null);
+		bGr.dispose();
 	}
 
 	@Override
@@ -147,14 +148,13 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		aliens.removeAll(toRemove);
 
 		// add new aliens for every one that was removed
-
 		for (int i = 0; i < toRemove.size(); ++i) {
 			Dimension d = getSize();
 			addAlien(d.width, d.height);
 		}
 
 		this.repaint();
-		
+
 		spaceShip.y -= yMotion;
 	}
 
@@ -172,18 +172,18 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		final int kc = e.getKeyCode();
 
 		if (kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
-            spaceShip.translate(10, -70);
-            jump();
-        }
-    }
-    
-    public void jump() {
-    	if (yMotion < 0) {
+			spaceShip.translate(0, -50);
+			jump();
+		}
+	}
+
+	public void jump() {
+		if (yMotion < 0) {
 			yMotion = 0;
 		}
-    	yMotion -= 5;
+		yMotion -= 3;
 
-    }
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
