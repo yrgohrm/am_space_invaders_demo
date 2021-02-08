@@ -41,7 +41,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 		addAlien(width, height);
 
-		this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 30, 20);
+		this.spaceShip = new Rectangle(width/3, width/2+120, 30, 20);
 
 		this.timer = new Timer(20, this);
 		this.timer.start();
@@ -95,7 +95,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 			g.fillRect(0, 0, d.width, d.height);
 			g.setColor(Color.black);
 			g.setFont(new Font("Arial", Font.BOLD, 48));
-			g.drawString("Game over!", 20, d.width / 2 - 24);
+			g.drawString("Game over!", 20, d.width/2-24);
 			return;
 		}
 
