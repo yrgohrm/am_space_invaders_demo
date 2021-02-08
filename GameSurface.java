@@ -2,15 +2,21 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -27,26 +33,30 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	private Timer timer;
 	private ArrayList<Rectangle> pipes;
 	private Rectangle spaceShip;
+	int yMotion;
 
 	public GameSurface(final int width, final int height) {
 		this.gameOver = false;
 		this.pipes = new ArrayList<>();
 
-		
 			addPipe(width, height);
 		
-
 		this.spaceShip = new Rectangle(20, width / 2 - 15, 30, 20);
 
 		this.timer = new Timer(20, this);
 		this.timer.start();
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		repaint(g);
-	}
+	 @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        try {
+				repaint(g);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 
 	private void addPipe(final int width, final int height) {
 		int randomHeight = ThreadLocalRandom.current().nextInt(height / 2);
@@ -76,7 +86,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	 * 
 	 * @param g the graphics to paint on
 	 */
-	private void repaint(Graphics g) {
+	private void repaint(Graphics g) throws IOException {
 		final Dimension d = this.getSize();
 
 		if (gameOver) {
@@ -99,8 +109,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// draw the space ship
-		g.setColor(Color.black);
-		g.fillRect(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height);
+        Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
+        g.drawImage(img, spaceShip.x, spaceShip.y, null);
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 40, 28, null);
+        bGr.dispose();
 	}
 
 	@Override
@@ -140,6 +154,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		}
 
 		this.repaint();
+		
+		spaceShip.y -= yMotion;
 	}
 
 	@Override
@@ -155,12 +171,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		final int maxHeight = this.getSize().height - spaceShip.height - 10;
 		final int kc = e.getKeyCode();
 
-		if (kc == KeyEvent.VK_UP && spaceShip.y > minHeight) {
-			spaceShip.translate(0, -10);
-		} else if (kc == KeyEvent.VK_DOWN && spaceShip.y < maxHeight) {
-			spaceShip.translate(0, 10);
+		if (kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
+            spaceShip.translate(10, -70);
+            jump();
+        }
+    }
+    
+    public void jump() {
+    	if (yMotion < 0) {
+			yMotion = 0;
 		}
-	}
+    	yMotion -= 5;
+
+    }
 
 	@Override
 	public void keyTyped(KeyEvent e) {
