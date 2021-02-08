@@ -31,15 +31,15 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 	private boolean gameOver;
 	private Timer timer;
-	private ArrayList<Rectangle> pipes;
+	private ArrayList<Rectangle> aliens;
 	private Rectangle spaceShip;
 	int yMotion;
 
 	public GameSurface(final int width, final int height) {
 		this.gameOver = false;
-		this.pipes = new ArrayList<>();
+		this.aliens = new ArrayList<>();
 
-			addPipe(width, height);
+			addAlien(width, height);
 		
 		this.spaceShip = new Rectangle(20, width / 2 - 15, 30, 20);
 
@@ -58,7 +58,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 			}
 	    }
 
-	private void addPipe(final int width, final int height) {
+	private void addAlien(final int width, final int height) {
 		int randomHeight = ThreadLocalRandom.current().nextInt(height / 2);
 		int gap = 80;
 
@@ -68,15 +68,15 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		int x2 = width;
 		int y2 = height - randomHeight;
 
-		int topPipeHeight = height - (randomHeight + gap);
+		int topalienHeight = height - (randomHeight + gap);
 		
-		// top pipe
-		pipes.add(new Rectangle(x, y, 50, topPipeHeight));
+		// top alien
+		aliens.add(new Rectangle(x, y, 50, topalienHeight));
 		
-		System.out.println("top pipe:\t" + "x: " + x + "\ty: "+ y + "\theight: "+ topPipeHeight);
-		// bottom pipe
-		pipes.add(new Rectangle(x2, y2, 50, randomHeight));
-		System.out.println("bottom pipe:\t" + "x:" + x2 + "\ty:"+ y2 + "\theight:"+ randomHeight);
+		System.out.println("top alien:\t" + "x: " + x + "\ty: "+ y + "\theight: "+ topalienHeight);
+		// bottom alien
+		aliens.add(new Rectangle(x2, y2, 50, randomHeight));
+		System.out.println("bottom alien:\t" + "x:" + x2 + "\ty:"+ y2 + "\theight:"+ randomHeight);
 
 	}
 
@@ -102,10 +102,10 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.cyan);
 		g.fillRect(0, 0, d.width, d.height);
 
-		// draw the pipes
-		for (Rectangle pipe : pipes) {
+		// draw the aliens
+		for (Rectangle alien : aliens) {
 			g.setColor(Color.green);
-			g.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
+			g.fillRect(alien.x, alien.y, alien.width, alien.height);
 		}
 
 		// draw the space ship
@@ -131,26 +131,26 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 		final List<Rectangle> toRemove = new ArrayList<>();
 
-		for (Rectangle pipe : pipes) {
-			pipe.translate(-1, 0);
-			if (pipe.x + pipe.width < 0) {
+		for (Rectangle alien : aliens) {
+			alien.translate(-1, 0);
+			if (alien.x + alien.width < 0) {
 				// we add to another list and remove later
 				// to avoid concurrent modification in a for-each loop
-				toRemove.add(pipe);
+				toRemove.add(alien);
 			}
 
-			if (pipe.intersects(spaceShip)) {
+			if (alien.intersects(spaceShip)) {
 				gameOver = true;
 			}
 		}
 
-		pipes.removeAll(toRemove);
+		aliens.removeAll(toRemove);
 
 		// add new aliens for every one that was removed
 
 		for (int i = 0; i < toRemove.size(); ++i) {
 			Dimension d = getSize();
-			addPipe(d.width, d.height);
+			addAlien(d.width, d.height);
 		}
 
 		this.repaint();
