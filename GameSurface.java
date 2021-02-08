@@ -44,7 +44,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         }
 
  
-        this.spaceShip = new Rectangle(10, width/2+120, 30, 20);
+        this.spaceShip = new Rectangle(width/3, width/2+120, 30, 20);
 
  
 
@@ -161,7 +161,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final int kc = e.getKeyCode();
 
         if (kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
-            spaceShip.translate(10, -70);
+            spaceShip.translate(0, -50);
             jump();
         }
     }
@@ -170,7 +170,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     	if (yMotion < 0) {
 			yMotion = 0;
 		}
-    	yMotion -= 5;
+    	yMotion -= 3;
 
     }
     
