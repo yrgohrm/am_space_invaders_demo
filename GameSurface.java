@@ -39,9 +39,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		this.gameOver = false;
         this.aliens = new ArrayList<>();
 
-        for (int i = 0; i < 1; ++i) {
+        
             addAlien(width, height);
-        }
+        
 
  
         this.spaceShip = new Rectangle(width/3, width/2+120, 30, 20);
@@ -65,7 +65,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 	private void addAlien(final int width, final int height) {
 		int randomHeight = ThreadLocalRandom.current().nextInt(height / 2);
-		int gap = 80;
+		int gap = 100;
 
 		int x = width;
 		int y = 0;
