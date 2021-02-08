@@ -37,14 +37,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 	public GameSurface(final int width, final int height) {
 		this.gameOver = false;
-		this.aliens = new ArrayList<>();
+        this.aliens = new ArrayList<>();
 
-		addAlien(width, height);
+        for (int i = 0; i < 1; ++i) {
+            addAlien(width, height);
+        }
 
-		this.spaceShip = new Rectangle(width/3, width/2+120, 30, 20);
+ 
+        this.spaceShip = new Rectangle(width/3, width/2+120, 30, 20);
 
-		this.timer = new Timer(20, this);
-		this.timer.start();
+ 
+
+        this.timer = new Timer(20, this);
+        this.timer.start();
 	}
 
 	@Override
@@ -110,7 +115,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// draw the space ship
-		Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
+		Image img = ImageIO.read(Path.of("d:/Kod/AgilaMetoder/amgrupp8/images/Bird2.png").toFile());
 		g.drawImage(img, spaceShip.x, spaceShip.y, null);
 		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D bGr = bimage.createGraphics();
