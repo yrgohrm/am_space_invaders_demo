@@ -115,7 +115,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 		}
 
 		// draw the space ship
-		Image img = ImageIO.read(Path.of("d:/Kod/AgilaMetoder/amgrupp8/images/Bird2.png").toFile());
+		Image img = ImageIO.read(Path.of("images/Bird2.png").toFile());
 		g.drawImage(img, spaceShip.x, spaceShip.y, null);
 		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D bGr = bimage.createGraphics();
