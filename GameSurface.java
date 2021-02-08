@@ -25,7 +25,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private List<Rectangle> aliens;
     private Rectangle spaceShip;
     private int jumpRemaining;
-    
+    private int frames;
+    private int gravity;
 
     public GameSurface(final int width, final int height) {
         this.gameOver = false;
@@ -82,10 +83,16 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        // this will trigger on the timer event
-        // if the game is not over yet it will
-        // update the positions of all aliens
-        // and check for collision with the space ship
+        // We count the frames because we want to trigger
+        // certain events after a specific amount of frames
+        frames++;
+
+        // This will make the game end when you hit a 
+        // warp pipe.
+
+        //TODO: Show score and highscore when game is over
+        //TODO: Make it possible to start a new round again
+
         if (gameOver) {
             timer.stop();
             return;
@@ -114,14 +121,27 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // the bird jumps 5px in Y-direction until jumpRemaining
         // becomes 0. This is because we want the bird to jump
         // in a smooth motion.
+        
         if (jumpRemaining > 0) {
             spaceShip.translate(0, -2);
             jumpRemaining = jumpRemaining - 2;
+            gravity = 0;
         }
+
         // After every jump, the gravity starts affecting
-        // the bird again. 
+        // the bird again. Variable gravity is also set to 0 after
+        // every jump. 
+        // Currently the instance variable gravity increases by 1
+        // every 7th frame. To have less or more gravity, 
+        // change the 7 to any other number. Higher number means 
+        // lower gravity and lower number means higher gravity.
+
         else {
-            spaceShip.translate(0, 1);
+            spaceShip.translate(0, gravity);
+            if(frames % 7 == 0) {
+                frames = 0;
+                gravity++;
+            }
         }
         this.repaint();
     }
