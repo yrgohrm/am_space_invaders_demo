@@ -12,7 +12,7 @@ public class App {
 
         GameSurface gs = new GameSurface(400, 400);
 
-        main.setSize(400, 400);
+        main.setSize(800, 800);
         main.setResizable(false);
         main.add(gs);
         main.addKeyListener(gs);

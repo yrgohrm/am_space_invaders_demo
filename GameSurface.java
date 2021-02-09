@@ -56,6 +56,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	private void addAlien(final int width, final int height) {
@@ -194,4 +195,5 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// do nothing
 	}
+
 }
