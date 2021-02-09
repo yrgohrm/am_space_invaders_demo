@@ -41,8 +41,8 @@ public class WarpPipes {
      * @param dy Displacement on y-axis.
      */
     void translate(int dx, int dy) {
-        rectangle1.translate(-1, 0);
-        rectangle2.translate(-1, 0);
+        rectangle1.translate(dx, dy);
+        rectangle2.translate(dx, dy);
     }
 
     /**
