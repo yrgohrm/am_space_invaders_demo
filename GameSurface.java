@@ -51,11 +51,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		try {
-						repaint(g);
-				} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-				}
+			repaint(g);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void addAlien(final int width, final int height) {
@@ -179,8 +179,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
 	public void jump() {
 		if (yMotion < 0) {
-						yMotion = 0;
-				}
+			yMotion = 0;
+		}
 		yMotion -= 3;
 
 	}
