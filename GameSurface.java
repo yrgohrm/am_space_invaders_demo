@@ -9,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 /**
@@ -22,7 +21,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
     private boolean gameOver;
     private Timer timer;
-    private List<Rectangle> aliens;
+    private List<WarpPipes> pipeList; // used to be: private List<Rectangle> aliens;
     private Rectangle spaceShip;
     private int jumpRemaining;
     private int frames;
@@ -30,9 +29,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
     public GameSurface(final int width, final int height) {
         this.gameOver = false;
-        this.aliens = new ArrayList<>();
+        this.pipeList = new ArrayList<>();
         for (int i = 0; i < 5; ++i) {
-            addWarpPipe(width, height);
+            pipeList.add(new WarpPipes(width, height));
         }
         this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
         this.timer = new Timer(2, this);
@@ -43,16 +42,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         super.paintComponent(g);
         repaint(g);
     }
-    private void addWarpPipe(final int width, final int height) {
-        //int x = ThreadLocalRandom.current().nextInt(width / 2, width - 30);
-        //int y = ThreadLocalRandom.current().nextInt(20, height - 30);
-        int x = width;
-        int y = 0;
-        int xx = width;
-        int yy = height/2;
-        aliens.add(new Rectangle(x, y, 60, 300));
-        aliens.add(new Rectangle(xx, yy, 60, 400));
-    }
+
     /**
      * Call this method when the graphics needs to be repainted
      * on the graphics surface.
@@ -72,10 +62,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // fill the background
         g.setColor(Color.blue);
         g.fillRect(0, 0, d.width, d.height);
-        // draw the aliens
-        for (Rectangle alien : aliens) {
-            g.setColor(Color.green);
-            g.fillRect(alien.x, alien.y, alien.width, alien.height);
+        // draw the Warp Pipes.
+        for (WarpPipes warpPipe : pipeList) {
+            warpPipe.drawPipe(g);
         }
         // draw the space ship
         g.setColor(Color.yellow);
@@ -97,23 +86,29 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             timer.stop();
             return;
         }
-        final List<Rectangle> toRemove = new ArrayList<>();
-        for (Rectangle alien : aliens) {
-            alien.translate(-1, 0);
-            if (alien.x + alien.width < 0) {
+        final List<WarpPipes> toRemove = new ArrayList<>();
+        //Removed by Tommi: for (Rectangle alien : aliens) {
+        for (WarpPipes pipe : pipeList) {
+            pipe.translate(-1, 0);
+            
+            if (pipe.noLongerOnScreen()) {
                 // we add to another list and remove later
                 // to avoid concurrent modification in a for-each loop
-                toRemove.add(alien);
+                toRemove.add(pipe);
             }
-            if (alien.intersects(spaceShip)) {
+
+            // Space ship has crashed into pipe
+            if (pipe.intersects(spaceShip)) {
                 gameOver = true;
             }
         }
-        aliens.removeAll(toRemove);
-        // add new aliens for every one that was removed
+        
+        pipeList.removeAll(toRemove);
+        // add a new pair of Warp Pipes for every one that was removed.
         for (int i = 0; i < toRemove.size(); ++i) {
             Dimension d = getSize();
-            addWarpPipe(d.width, d.height);
+            pipeList.add(new WarpPipes(d.width, d.height));
+            //addWarpPipe(d.width, d.height);
         }
 
         // jumpRemaining is an instance variable, everytime
