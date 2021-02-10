@@ -26,13 +26,14 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int jumpRemaining;
     private int frames;
     private int gravity;
+    private int score;
 
     public GameSurface(final int width, final int height) {
         this.gameOver = false;
         this.pipeList = new ArrayList<>();
-        for (int i = 0; i < 5; ++i) {
-            pipeList.add(new WarpPipes(width, height));
-        }
+        
+        pipeList.add(new WarpPipes(width, height));
+
         this.spaceShip = new Rectangle(20, width/2-15, 30, 20);
         this.timer = new Timer(2, this);
         this.timer.start();
@@ -56,7 +57,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             g.fillRect(0, 0, d.width, d.height);    
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("Game over!", 20, d.width/2-24);
+            g.drawString("Game over!" + " Your score: " + score, 20, d.width/2-24);
             return;
         }
         // fill the background
@@ -108,6 +109,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         for (int i = 0; i < toRemove.size(); ++i) {
             Dimension d = getSize();
             pipeList.add(new WarpPipes(d.width, d.height));
+            score++;
             //addWarpPipe(d.width, d.height);
         }
 
