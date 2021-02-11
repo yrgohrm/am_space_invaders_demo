@@ -33,9 +33,23 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private List<Rectangle> aliens;
     private Rectangle spaceShip;
-    int yMotion;
+    private int yMotion;
+    private final int width = 400;
+    private final int height = 400;
 
-    public GameSurface(final int width, final int height) {
+    public GameSurface() {
+        this.gameOver = false;
+        this.aliens = new ArrayList<>();
+
+        addAlien(width, height);
+
+        this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 40, 28);
+
+        this.timer = new Timer(20, this);
+        this.timer.start();
+    }
+    
+    private void restart() {
         this.gameOver = false;
         this.aliens = new ArrayList<>();
 
@@ -157,6 +171,10 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         this.repaint();
 
         spaceShip.y -= yMotion;
+        
+        if (spaceShip.y < 0 || spaceShip.y  > height) {
+            gameOver = true;
+        }
     }
 
     @Override
@@ -164,21 +182,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // this event triggers when we release a key and then
         // we will move the space ship if the game is not over yet
 
-        if (gameOver) {
-            return;
-        }
-
-        final int minHeight = 10;
         final int maxHeight = this.getSize().height - spaceShip.height - 10;
         final int kc = e.getKeyCode();
 
-        if (kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
-            spaceShip.translate(0, -50);
+        if (!gameOver && kc == KeyEvent.VK_SPACE && spaceShip.y < maxHeight) {
             jump();
+        } 
+        else if (gameOver && kc == KeyEvent.VK_SPACE) {
+            restart();
         }
     }
 
     public void jump() {
+        spaceShip.translate(0, -50);
         if (yMotion < 0) {
             yMotion = 0;
         }
