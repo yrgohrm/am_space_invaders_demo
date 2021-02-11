@@ -41,7 +41,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         addAlien(width, height);
 
-        this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 30, 20);
+        this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
@@ -115,7 +115,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         g.drawImage(img, spaceShip.x, spaceShip.y, null);
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 40, 28, null);
+        bGr.drawImage(bimage, 40, 28, null);
         bGr.dispose();
     }
 
