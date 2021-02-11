@@ -43,7 +43,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         addAlien(width, height);
 
-        this.spaceShip = new Rectangle(width / 3, width / 2, 30, 20);
+        this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
@@ -55,7 +55,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         addAlien(width, height);
 
-        this.spaceShip = new Rectangle(width / 3, width / 2, 30, 20);
+        this.spaceShip = new Rectangle(width / 3, width / 2 + 120, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
