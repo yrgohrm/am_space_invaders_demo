@@ -49,9 +49,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // TOMMI: Create highscore list
         highscoreList = new HighScoreList();
         int position=1;
-        for (HighscoreItem item : highscoreList.getSet()) {
-            System.out.printf("Current highscore list:");
-            System.out.printf("#%d: %s %d%n", position, item.getName(), item.getScore());
+        System.out.printf("Current highscore list:");
+        for (HighscoreItem item : highscoreList.getList()) {
+            System.out.printf("#%d: %s%n", position, item);
             position++;
         }
     }
