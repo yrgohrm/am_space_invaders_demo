@@ -159,7 +159,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        if (bird.y > 800) {
+        if (bird.y > 600) {
             gameOver = true;
         } 
 

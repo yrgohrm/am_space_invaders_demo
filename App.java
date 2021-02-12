@@ -10,9 +10,9 @@ public class App {
     public static void main(String[] args) {
         JFrame main = new JFrame("Jumpy Birb");
 
-        GameSurface gs = new GameSurface(800, 800);
+        GameSurface gs = new GameSurface(600, 600);
 
-        main.setSize(800, 800);
+        main.setSize(600, 600);
         main.setResizable(false);
         main.add(gs);
         main.addKeyListener(gs);
