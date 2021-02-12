@@ -42,7 +42,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         pipeList.add(new WarpPipes(width, height));
 
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
-        this.timer = new Timer(16, this);
+        this.timer = new Timer(2, this);
         this.timer.start();
     }
 
@@ -201,6 +201,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             // Clear the current current score
             currentScore = 0;
 
+            // Set gravity to zero again after death.
+            gravity = 0;
             // Set gameOver to false again so that the repaint method will
             // draw the game and then start the timer again.
             gameOver = false;
