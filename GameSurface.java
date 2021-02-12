@@ -64,9 +64,10 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             g.setColor(Color.red);
             g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
+            g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Game over!" + " Your score: " + currentScore, 20, d.width / 2 - 24);
             g.drawString("Highscore: " + highscore, 20, d.width / 2 + 24);
+            g.drawString("Press Space to continue", 20, d.width / 2 + 72);
             return;
         }
         // fill the background
@@ -77,8 +78,14 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             warpPipe.drawPipe(g);
         }
         // draw the space ship
-        g.setColor(Color.yellow);
-        g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        if (jumpRemaining != 0) {
+            g.setColor(Color.red);
+            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
+        else {
+            g.setColor(Color.yellow);
+            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
     }
 
     @Override
