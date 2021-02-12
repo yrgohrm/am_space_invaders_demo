@@ -31,6 +31,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int width;
     private int height;
     private int highscore = 0;
+    HighScoreList highscoreList;
 
     public GameSurface(final int width, final int height) {
         this.width = width;
@@ -44,6 +45,15 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
         this.timer = new Timer(2, this);
         this.timer.start();
+
+        // TOMMI: Create highscore list
+        highscoreList = new HighScoreList();
+        int position=1;
+        for (HighscoreItem item : highscoreList.getSet()) {
+            System.out.printf("Current highscore list:");
+            System.out.printf("#%d: %s %d%n", position, item.getName(), item.getScore());
+            position++;
+        }
     }
 
     @Override
