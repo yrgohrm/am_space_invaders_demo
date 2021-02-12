@@ -42,7 +42,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         pipeList.add(new WarpPipes(width, height));
 
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
-        this.timer = new Timer(2, this);
+        this.timer = new Timer(20, this);
         this.timer.start();
     }
 
@@ -107,7 +107,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final List<WarpPipes> toRemove = new ArrayList<>();
         // Removed by Tommi: for (Rectangle alien : aliens) {
         for (WarpPipes pipe : pipeList) {
-            pipe.translate(-3, 0);
+            pipe.translate(-5, 0);
 
             if (pipe.noLongerOnScreen()) {
                 // we add to another list and remove later
