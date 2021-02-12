@@ -42,7 +42,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         pipeList.add(new WarpPipes(width, height));
 
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
-        this.timer = new Timer(2, this);
+        this.timer = new Timer(16, this);
         this.timer.start();
     }
 
@@ -158,6 +158,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
                 gravity++;
             }
         }
+
+        if (bird.y > 800) {
+            gameOver = true;
+        } 
+
         this.repaint();
     }
 
