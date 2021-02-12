@@ -100,7 +100,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final List<WarpPipes> toRemove = new ArrayList<>();
         // Removed by Tommi: for (Rectangle alien : aliens) {
         for (WarpPipes pipe : pipeList) {
-            pipe.translate(-1, 0);
+            pipe.translate(-3, 0);
 
             if (pipe.noLongerOnScreen()) {
                 // we add to another list and remove later
