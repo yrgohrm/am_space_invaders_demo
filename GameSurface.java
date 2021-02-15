@@ -142,6 +142,12 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         if (gameOver) {
             timer.stop();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             return;
         }
 
