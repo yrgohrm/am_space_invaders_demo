@@ -36,6 +36,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int yMotion;
     private final int width = 400;
     private final int height = 400;
+    private int score;
+    private int highScore;
 
     public GameSurface() {
         this.gameOver = false;
@@ -105,7 +107,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("Game over!", 20, d.width / 2 - 24);
+            g.drawString("Game Over!", 20, d.width / 2 - 24);
+            
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString(toString(), 20, ((d.width / 2 - 24) + 48));
+            score = 0;
             return;
         }
 
@@ -176,6 +182,16 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         if (bird.y < 0 || bird.y  > height) {
             gameOver = true;
         }
+        
+        // Awards one point if bird passes trough a set of pipes
+        if (pipes.get(0).x == (width/3 - bird.width) && !gameOver) {
+            score++;
+            System.out.println("Current score: " + score);
+        }
+        
+        if (score > highScore) {
+            highScore = score;
+        }
     }
 
     @Override
@@ -193,6 +209,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             restart();
         }
     }
+
+        
+    public int getScore() {
+        return score;
+    }
+    
+
+    @Override
+    public String toString() {
+        return "You scored: " + score + "   Highscore: " + highScore;
+    }
+    
+    
 
     public void jump() {
         bird.translate(0, -50);
