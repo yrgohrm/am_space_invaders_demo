@@ -159,8 +159,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         // add new aliens for every one that was removed
         for (int i = 0; i < toRemove.size(); ++i) {
-            Dimension d = getSize();
-            addAlien(d.width, d.height);
+           // Dimension d = getSize();
+            addAlien(width, height);
         }
 
         this.repaint();
