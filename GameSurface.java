@@ -74,24 +74,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     }
 
     private void addAlien(final int width, final int height) {
-        int randomHeight = ThreadLocalRandom.current().nextInt(height / 2);
-        int gap = 100;
-
-        int x = width;
-        int y = 0;
-
-        int x2 = width;
-        int y2 = height - randomHeight;
-
-        int topalienHeight = height - (randomHeight + gap);
+        int randomHeight = ThreadLocalRandom.current().nextInt(height/4, height/2);
+        int gap = 150;
 
         // top alien
-        aliens.add(new Rectangle(x, y, 50, topalienHeight));
-
-        System.out.println("top alien:\t" + "x: " + x + "\ty: " + y + "\theight: " + topalienHeight);
+        aliens.add(new Rectangle(width, 0, 50, (height - (randomHeight + gap))));
+        // console log for bugfixes
+        System.out.println("top alien:\t" + "x: " + width + "\ty: " + 0 + "\theight: " + (height - (randomHeight + gap)));
+        
+        
         // bottom alien
-        aliens.add(new Rectangle(x2, y2, 50, randomHeight));
-        System.out.println("bottom alien:\t" + "x:" + x2 + "\ty:" + y2 + "\theight:" + randomHeight);
+        aliens.add(new Rectangle(width, (height-randomHeight), 50, randomHeight));
+        // console log for bugfixes
+        System.out.println("bottom alien:\t" + "x:" + width + "\ty:" + (height-randomHeight) + "\theight:" + randomHeight);
 
     }
 
@@ -170,8 +165,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         // add new aliens for every one that was removed
         for (int i = 0; i < toRemove.size(); ++i) {
-            Dimension d = getSize();
-            addAlien(d.width, d.height);
+           // Dimension d = getSize();
+            addAlien(width, height);
         }
 
         this.repaint();
