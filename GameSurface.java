@@ -14,11 +14,16 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+//import com.sun.tools.classfile.ConstantPool.UnexpectedEntry;
 
 /**
  * A simple panel with a space invaders "game" in it. This is just to
@@ -103,6 +108,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final Dimension d = this.getSize();
 
         if (gameOver) {
+            JDialog da = new JDialog();
+            da.setLocation(height/2, width/2);
+            da.setVisible(true);
+            String name = JOptionPane.showInputDialog(da,"Highscore! Write your name:");
+            da.setVisible(false);
             g.setColor(Color.red);
             g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
@@ -111,6 +121,9 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             
             g.setFont(new Font("Arial", Font.BOLD, 20));
             g.drawString(toString(), 20, ((d.width / 2 - 24) + 48));
+            
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString(name, 20, ((d.width / 2 - 24) + 64));
             score = 0;
             return;
         }
@@ -133,7 +146,8 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         bGr.drawImage(bimage, 40, 28, null);
         bGr.dispose();
     }
-
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         // this will trigger on the timer event
@@ -189,9 +203,13 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             System.out.println("Current score: " + score);
         }
         
-        if (score > highScore) {
+
+        if (score > highScore && gameOver == true) {
             highScore = score;
+
         }
+       
+        
     }
 
     @Override
