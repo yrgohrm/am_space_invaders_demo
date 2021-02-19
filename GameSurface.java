@@ -47,7 +47,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         pipeList.add(new WarpPipes(width, height));
 
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
-        this.timer = new Timer(2, this);
+        this.timer = new Timer(20, this);
         this.timer.start();
 
         // TOMMI: Create highscore list
@@ -117,6 +117,10 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
                     JOptionPane.ERROR_MESSAGE);
                     System.err.print(e.getStackTrace());
             }
+            g.setFont(new Font("Arial", Font.BOLD, 36));
+            g.drawString("Game over!" + " Your score: " + currentScore, 20, d.width / 2 - 24);
+            g.drawString("Highscore: " + highscore, 20, d.width / 2 + 24);
+            g.drawString("Press Space to continue", 20, d.width / 2 + 72);
             return;
         }
         // fill the background
@@ -127,8 +131,14 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             warpPipe.drawPipe(g);
         }
         // draw the space ship
-        g.setColor(Color.yellow);
-        g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        if (jumpRemaining != 0) {
+            g.setColor(Color.red);
+            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
+        else {
+            g.setColor(Color.yellow);
+            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+        }
     }
 
     @Override
@@ -150,7 +160,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final List<WarpPipes> toRemove = new ArrayList<>();
         // Removed by Tommi: for (Rectangle alien : aliens) {
         for (WarpPipes pipe : pipeList) {
-            pipe.translate(-1, 0);
+            pipe.translate(-5, 0);
 
             if (pipe.noLongerOnScreen()) {
                 // we add to another list and remove later
