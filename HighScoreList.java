@@ -27,7 +27,7 @@ public class HighScoreList {
 
     public int getLowestHighscore() {
         if (highscoreList.size() < MAX_SIZE) {
-            return 0;
+            return 1;
         }
 
         if (highscoreList.size() <= MAX_SIZE) {
@@ -50,11 +50,11 @@ public class HighScoreList {
      * 
      * @param newHighscore Highscore that you want to add to the highscore list.
      * @throws IllegalArgumentException If you try to add a new score which is not
-     *                                  good enough for the highscore leaderboard.
+     *                                  good enough for the highscore leaderboard. A score of zero is not permitted.
      */
     public void addHighscore(HighscoreItem newHighscore) throws IllegalArgumentException {
         // Check to see if this score is enough to make the leaderboard.
-        if (newHighscore.getScore() < getLowestHighscore()) {
+        if (newHighscore.getScore() < getLowestHighscore() || newHighscore.getScore() == 0) {
             throw new IllegalArgumentException("Score of" + newHighscore.getScore() + "(" + newHighscore.getName()
                     + ") is not enough to make it to the highscore list");
         }
@@ -95,32 +95,7 @@ public class HighScoreList {
         return highscoreList;
     }
 
-    private void loadHighscore() {
-        /*
-        try {
-            addHighscore(new HighscoreItem(10, "Thomas"));
-            addHighscore(new HighscoreItem(3, "Tommi"));
-            addHighscore(new HighscoreItem(3, "Tommi"));
-            addHighscore(new HighscoreItem(2, "Tommi"));
-            addHighscore(new HighscoreItem(4, "Tommi"));
-            addHighscore(new HighscoreItem(7, "Merra"));
-            addHighscore(new HighscoreItem(5, "Bo"));
-            addHighscore(new HighscoreItem(15, "Aku Ankka"));
-            addHighscore(new HighscoreItem(5, "Thomas"));
-            addHighscore(new HighscoreItem(15, "Aku Ankka"));
-        } catch (Exception e) {
-            System.err.println("Error:" + e.getMessage());
-        }
-        
-        /*
-        try {
-            saveHighscoreFile();
-        } catch (IOException e) {
-            System.out.println("Unable to save higscore to file.");
-            e.printStackTrace();
-        }
-        */
-        
+    private void loadHighscore() {       
         try {
             loadHighscoreFile();
         } catch (IOException e) {
@@ -129,7 +104,7 @@ public class HighScoreList {
         }
     }
 
-    private static void saveHighscoreFile() throws IOException {
+    public static void saveHighscoreFile() throws IOException {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(HIGHSCORE_FILE_STRING, false))) {
 
