@@ -31,6 +31,8 @@ import javax.swing.Timer;
  * This is by no means very good code.
  * 
  */
+
+ //testar testar testat
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
 
