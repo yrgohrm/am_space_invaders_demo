@@ -7,8 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -20,6 +23,7 @@ import javax.swing.Timer;
  */
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
+    private static final int LINE_HEIGHT_IN_PIXELS = 48;
     private boolean gameOver;
     private Timer timer;
     private List<WarpPipes> pipeList; // used to be: private List<Rectangle> aliens;
@@ -31,6 +35,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int width;
     private int height;
     private int highscore = 0;
+    HighScoreList highscoreList;
 
     public GameSurface(final int width, final int height) {
         this.width = width;
@@ -44,6 +49,15 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         this.bird = new Rectangle(20, width / 2 - 15, 30, 20);
         this.timer = new Timer(20, this);
         this.timer.start();
+
+        // TOMMI: Create highscore list
+        highscoreList = new HighScoreList();
+        int position = 1;
+        System.out.printf("Current highscore list:");
+        for (HighscoreItem item : highscoreList.getList()) {
+            System.out.printf("#%d: %s%n", position, item);
+            position++;
+        }
     }
 
     @Override
@@ -60,10 +74,49 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
      */
     private void repaint(Graphics g) {
         final Dimension d = this.getSize();
+        String nameOfUser = null;
+        boolean achievedHighscore = currentScore > highscoreList.getLowestHighscore();
         if (gameOver) {
-            g.setColor(Color.red);
-            g.fillRect(0, 0, d.width, d.height);
+            if (achievedHighscore) {
+                nameOfUser = JOptionPane.showInputDialog(this, 
+                    "What's your name?",
+                    "Game Over: you killed Jumpy Birb!", 
+                    JOptionPane.PLAIN_MESSAGE);
+                highscoreList.addHighscore(new HighscoreItem(currentScore, nameOfUser));
+            }
             g.setColor(Color.black);
+            g.fillRect(0, 0, d.width, d.height);
+            g.setColor(Color.red);
+            g.setFont(new Font("Arial", Font.BOLD, LINE_HEIGHT_IN_PIXELS));
+
+            String displayName;
+            if (achievedHighscore) {
+                displayName = nameOfUser;
+            } else {
+                displayName = "player";
+            }
+
+            g.drawString("Game over " + displayName + "! Your score: " + currentScore, 20, 48);
+            // g.drawString("Highscore: " + highscore, 20, (d.width / 2) + 24);
+
+            // Skriv ut highscorelist:
+            int position = 1;
+            g.drawString("Current highscore list:", 20, (d.width) + 24 + LINE_HEIGHT_IN_PIXELS);
+            for (HighscoreItem item : highscoreList.getList()) {
+                g.drawString("#" + position + ": " + item.getName() + ": " + item.getScore(), 20,
+                        +24 + (LINE_HEIGHT_IN_PIXELS * 2) + (LINE_HEIGHT_IN_PIXELS * position));
+                position++;
+            }
+            try {
+                HighScoreList.saveHighscoreFile();
+            } catch (IOException e) {
+                //custom title, error icon
+                JOptionPane.showMessageDialog(this,
+                    "Unable to save highscore file.",
+                    "File error.",
+                    JOptionPane.ERROR_MESSAGE);
+                    System.err.print(e.getStackTrace());
+            }
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Game over!" + " Your score: " + currentScore, 20, d.width / 2 - 24);
             g.drawString("Highscore: " + highscore, 20, d.width / 2 + 24);
@@ -166,7 +219,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             }
         }
         // if bird falls below gamesurface area = game over
-        if (bird.y > 600) {
+        if (bird.y > 800) {
             gameOver = true;
         } 
 

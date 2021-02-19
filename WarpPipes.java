@@ -20,8 +20,8 @@ public class WarpPipes {
         int xx = width;
         int yy = height/2;
 
-        rectangle1 = new Rectangle(x, y, 60, 200);
-        rectangle2 = new Rectangle(xx, yy, 60, 300);
+        rectangle1 = new Rectangle(x, y, 60, 300);
+        rectangle2 = new Rectangle(xx, yy, 60, 400);
     }
 
     /**
