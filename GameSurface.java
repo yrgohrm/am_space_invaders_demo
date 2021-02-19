@@ -117,10 +117,6 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
                     JOptionPane.ERROR_MESSAGE);
                     System.err.print(e.getStackTrace());
             }
-            g.setFont(new Font("Arial", Font.BOLD, 36));
-            g.drawString("Game over!" + " Your score: " + currentScore, 20, d.width / 2 - 24);
-            g.drawString("Highscore: " + highscore, 20, d.width / 2 + 24);
-            g.drawString("Press Space to continue", 20, d.width / 2 + 72);
             return;
         }
         // fill the background
