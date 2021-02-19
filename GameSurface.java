@@ -20,6 +20,7 @@ import javax.swing.Timer;
  */
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
+    private static final int LINE_HEIGHT_IN_PIXELS = 48;
     private boolean gameOver;
     private Timer timer;
     private List<WarpPipes> pipeList; // used to be: private List<Rectangle> aliens;
@@ -74,9 +75,17 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
             g.setColor(Color.red);
             g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("Game over!" + " Your score: " + currentScore, 20, d.width / 2 - 24);
-            g.drawString("Highscore: " + highscore, 20, d.width / 2 + 24);
+            g.setFont(new Font("Arial", Font.BOLD, LINE_HEIGHT_IN_PIXELS));
+            g.drawString("Game over!" + " Your score: " + currentScore, 20, (d.width / 2) - 24);
+            //g.drawString("Highscore: " + highscore, 20, (d.width / 2) + 24);
+
+            // Skriv ut highscorelist:
+            int position=1;
+            g.drawString("Current highscore list:", 20, (d.width / 2) + 24 + LINE_HEIGHT_IN_PIXELS);
+            for (HighscoreItem item : highscoreList.getList()) {
+                g.drawString("#" + position + ": " + item.getName() + ": " + item.getScore(), 20, (d.width / 2) + 24 + (LINE_HEIGHT_IN_PIXELS*2) + (LINE_HEIGHT_IN_PIXELS * position) );
+                position++;
+            }
             return;
         }
         // fill the background
