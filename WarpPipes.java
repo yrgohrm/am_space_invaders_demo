@@ -56,6 +56,14 @@ public class WarpPipes {
             return false;
     }
 
+    
+    boolean halfwayAcrossScreen(int width) {
+        if (rectangle1.x + rectangle1.width < width/2)
+            return true;
+        else 
+            return false;
+    }
+
     /**
      * 
      * Draws the pair of warp pipes.
