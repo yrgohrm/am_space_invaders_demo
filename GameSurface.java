@@ -123,17 +123,29 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.blue);
         g.fillRect(0, 0, d.width, d.height);
         // draw the Warp Pipes.
+        
         for (WarpPipes warpPipe : pipeList) {
             warpPipe.drawPipe(g);
         }
+
+        
+
         // draw the space ship
         if (jumpRemaining != 0) {
+            g.setColor(Color.yellow);
+            g.fillRoundRect(bird.x, bird.y, bird.width, bird.height, 40, 300);
+            g.setColor(Color.black);
+            g.fillRect(bird.x + 10, bird.y + 10, bird.width / 3, bird.height / 1);
             g.setColor(Color.red);
-            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+            g.fillRect(bird.x + 25, bird.y + 7, bird.width / 7, bird.height / 5);
         }
         else {
             g.setColor(Color.yellow);
-            g.fillRect(bird.x, bird.y, bird.width, bird.height);
+            g.fillRoundRect(bird.x, bird.y, bird.width, bird.height, 40, 300);
+            g.setColor(Color.black);
+            g.fillRect(bird.x + 10, bird.y + 10, bird.width / 3, bird.height / -1);
+            g.setColor(Color.red);
+            g.fillRect(bird.x + 25, bird.y + 7, bird.width / 7, bird.height / 5);
         }
     }
 
