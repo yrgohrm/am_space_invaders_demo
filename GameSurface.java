@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
@@ -31,6 +33,7 @@ import javax.swing.Timer;
  * This is by no means very good code.
  * 
  */
+
 public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
 
@@ -41,28 +44,35 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int yMotion;
     private final int width = 400;
     private final int height = 400;
-    private int score;
-    private int highScore;
+    private int score = 0;
+   // private int highScore;
+    private TreeMap<Integer, String> highScores = new TreeMap<Integer, String>();
+    private String playerName;
+    private int scoreListCount = 0;
+    Integer fakeScore = 1;
 
     public GameSurface() {
         this.gameOver = false;
         this.pipes = new ArrayList<>();
 
         addPipes(width, height);
-
-        this.bird = new Rectangle(width/3, width/2, 40, 28);
+//        for (int i = 0; i < 10; ++i) {
+//            highScores.put(fakeScore, "Bosse");
+//            fakeScore++;
+//        }
+        this.bird = new Rectangle(width / 3, width / 2, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
     }
-    
+
     private void restart() {
         this.gameOver = false;
         this.pipes = new ArrayList<>();
 
         addPipes(width, height);
 
-        this.bird = new Rectangle(width/3, width/2, 40, 28);
+        this.bird = new Rectangle(width / 3, width / 2, 40, 28);
 
         this.timer = new Timer(20, this);
         this.timer.start();
@@ -81,19 +91,20 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     }
 
     private void addPipes(final int width, final int height) {
-        int randomHeight = ThreadLocalRandom.current().nextInt(height/4, height/2);
+        int randomHeight = ThreadLocalRandom.current().nextInt(height / 4, height / 2);
         int gap = 150;
 
         // top pipe
         pipes.add(new Rectangle(width, 0, 50, (height - (randomHeight + gap))));
         // console log for bugfixes
-        System.out.println("top pipe:\t" + "x: " + width + "\ty: " + 0 + "\theight: " + (height - (randomHeight + gap)));
-        
-        
+        // System.out.println("top pipe:\t" + "x: " + width + "\ty: " + 0 + "\theight: "
+        // + (height - (randomHeight + gap)));
+
         // bottom pipe
-        pipes.add(new Rectangle(width, (height-randomHeight), 50, randomHeight));
+        pipes.add(new Rectangle(width, (height - randomHeight), 50, randomHeight));
         // console log for bugfixes
-        System.out.println("bottom pipe:\t" + "x:" + width + "\ty:" + (height-randomHeight) + "\theight:" + randomHeight);
+        // System.out.println("bottom pipe:\t" + "x:" + width + "\ty:" + (height -
+        // randomHeight) + "\theight:" + randomHeight);
 
     }
 
@@ -108,23 +119,42 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final Dimension d = this.getSize();
 
         if (gameOver) {
-            JDialog da = new JDialog();
-            da.setLocation(height/2, width/2);
-            da.setVisible(true);
-            String name = JOptionPane.showInputDialog(da,"Highscore! Write your name:");
-            da.setVisible(false);
+            if (isItHighscore(score)) {
+
+                JDialog da = new JDialog();
+                da.setBackground(Color.green);
+                da.setLocation(height / 2, width / 2);
+                da.setVisible(true);
+                playerName = JOptionPane.showInputDialog(da, "Highscore! Write your name:");
+                highScores.put(score, playerName);
+                da.setVisible(false);
+
+               
+            }
+
             g.setColor(Color.red);
             g.fillRect(0, 0, d.width, d.height);
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("Game Over!", 20, d.width / 2 - 24);
+            g.drawString("Game Over!", d.height / 6, d.width / 6);
             
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString(toString(), 20, ((d.width / 2 - 24) + 48));
+            g.drawString(toString(), d.height / 3, ((d.width / 4)));
             
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString(name, 20, ((d.width / 2 - 24) + 64));
-            score = 0;
+            g.drawString("Highscores:", d.height / 5, ((d.width / 3)));
+            
+            for (Map.Entry<Integer, String> entry : highScores.entrySet()) {
+
+                g.setFont(new Font("Arial", Font.BOLD, 20));
+                g.drawString(entry.getKey().toString() + "   " + 
+                entry.getValue().toString(), (d.height / 2) + 20, ((d.width / 3) + 
+                        scoreListCount));
+                System.out.println(entry.getKey()+ entry.getValue());
+                score = 0;
+                scoreListCount += 20;
+            }
+            scoreListCount =  0;
             return;
         }
 
@@ -146,8 +176,7 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         bGr.drawImage(bimage, 40, 28, null);
         bGr.dispose();
     }
-    
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // this will trigger on the timer event
@@ -185,31 +214,44 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         // add new pipes for every one that was removed
         for (int i = 0; i < toRemove.size(); ++i) {
-           // Dimension d = getSize();
+            // Dimension d = getSize();
             addPipes(width, height);
         }
 
         this.repaint();
 
         bird.y -= yMotion;
-        
-        if (bird.y < 0 || bird.y  > height) {
+
+        if (bird.y < 0 || bird.y > height) {
             gameOver = true;
         }
-        
+
         // Awards one point if bird passes trough a set of pipes
-        if (pipes.get(0).x == (width/3 - bird.width) && !gameOver) {
+        if (pipes.get(0).x == (width / 3 - bird.width) && !gameOver) {
             score++;
             System.out.println("Current score: " + score);
         }
-        
 
-        if (score > highScore && gameOver == true) {
-            highScore = score;
+    }
 
+    public boolean isItHighscore(int score) {
+        // highScores.put("lena", 0);
+
+        if (highScores.size() <= 10) {
+            return true;
         }
-       
-        
+
+        if (highScores.size() >= 10) {
+
+            if (highScores.firstKey() < score) {
+
+                highScores.remove(highScores.firstEntry());
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -222,24 +264,19 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
         if (!gameOver && kc == KeyEvent.VK_SPACE && bird.y < maxHeight) {
             jump();
-        } 
-        else if (gameOver && kc == KeyEvent.VK_SPACE) {
+        } else if (gameOver && kc == KeyEvent.VK_SPACE) {
             restart();
         }
     }
 
-        
     public int getScore() {
         return score;
     }
-    
 
     @Override
     public String toString() {
-        return "You scored: " + score + "   Highscore: " + highScore;
+        return "You scored: " + score;
     }
-    
-    
 
     public void jump() {
         bird.translate(0, -50);

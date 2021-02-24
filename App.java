@@ -9,7 +9,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
 public class App {
     public static void main(String[] args) {
              
-        JFrame main = new JFrame("Invaders");
+        JFrame main = new JFrame("Jumpy Birb");
 
         GameSurface gs = new GameSurface();
 
