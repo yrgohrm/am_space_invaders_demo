@@ -122,27 +122,21 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 	 */
 	private void repaint(Graphics g) throws IOException {
 		final Dimension d = this.getSize();
-		go = ImageIO.read(Path.of("images/gameOver.png").toFile());
 
 		if (gameOver) {
-			g.drawImage(go, 75, 100, null);
+
 			if (isItHighscore(score)) {
 
-				JDialog da = new JDialog();
-				da.setBackground(Color.green);
-				da.setLocation(height / 2, width / 2);
-				da.setVisible(true);
-				playerName = JOptionPane.showInputDialog(da, "Highscore! Write your name:");
+				playerName = JOptionPane.showInputDialog(this, "Highscore! Write your name:");
 				highScores.put(score, playerName);
-				da.setVisible(false);
 
 			}
 
-//            g.setColor(Color.red);
-//            g.fillRect(0, 0, d.width, d.height);
-//            g.setColor(Color.black);
-//            g.setFont(new Font("Arial", Font.BOLD, 48));
-//            g.drawString("Game Over!", d.height / 6, d.width / 6);
+			g.setColor(Color.white);
+			g.fillRect(0, 0, d.width, d.height);
+			g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            g.drawString("Game Over!", d.height / 6, d.width / 6);
 
 			g.setFont(new Font("Arial", Font.BOLD, 20));
 			g.drawString(toString(), d.height / 3, ((d.width / 4)));
