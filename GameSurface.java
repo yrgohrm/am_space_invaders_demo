@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
@@ -44,17 +44,22 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
     private int yMotion;
     private final int width = 400;
     private final int height = 400;
-    private int score;
-    private int highScore;
-    private HashMap<String, Integer> highScores = new HashMap<String, Integer>();
+    private int score = 0;
+   // private int highScore;
+    private TreeMap<Integer, String> highScores = new TreeMap<Integer, String>();
     private String playerName;
+    private int scoreListCount = 0;
+    Integer fakeScore = 1;
 
     public GameSurface() {
         this.gameOver = false;
         this.pipes = new ArrayList<>();
 
         addPipes(width, height);
-
+//        for (int i = 0; i < 10; ++i) {
+//            highScores.put(fakeScore, "Bosse");
+//            fakeScore++;
+//        }
         this.bird = new Rectangle(width / 3, width / 2, 40, 28);
 
         this.timer = new Timer(20, this);
@@ -92,14 +97,14 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         // top pipe
         pipes.add(new Rectangle(width, 0, 50, (height - (randomHeight + gap))));
         // console log for bugfixes
-        System.out
-                .println("top pipe:\t" + "x: " + width + "\ty: " + 0 + "\theight: " + (height - (randomHeight + gap)));
+        // System.out.println("top pipe:\t" + "x: " + width + "\ty: " + 0 + "\theight: "
+        // + (height - (randomHeight + gap)));
 
         // bottom pipe
         pipes.add(new Rectangle(width, (height - randomHeight), 50, randomHeight));
         // console log for bugfixes
-        System.out.println(
-                "bottom pipe:\t" + "x:" + width + "\ty:" + (height - randomHeight) + "\theight:" + randomHeight);
+        // System.out.println("bottom pipe:\t" + "x:" + width + "\ty:" + (height -
+        // randomHeight) + "\theight:" + randomHeight);
 
     }
 
@@ -114,44 +119,43 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         final Dimension d = this.getSize();
 
         if (gameOver) {
-            if (isItHighscore(score) == true) {
-                
+            if (isItHighscore(score)) {
 
                 JDialog da = new JDialog();
+                da.setBackground(Color.green);
                 da.setLocation(height / 2, width / 2);
                 da.setVisible(true);
                 playerName = JOptionPane.showInputDialog(da, "Highscore! Write your name:");
-                highScores.put(playerName, score);
-                
+                highScores.put(score, playerName);
                 da.setVisible(false);
 
-                g.setColor(Color.red);
-                g.fillRect(0, 0, d.width, d.height);
-                g.setColor(Color.black);
-                g.setFont(new Font("Arial", Font.BOLD, 48));
-                g.drawString("Game Over!", 20, d.width / 2 - 24);
+               
+            }
+
+            g.setColor(Color.red);
+            g.fillRect(0, 0, d.width, d.height);
+            g.setColor(Color.black);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            g.drawString("Game Over!", d.height / 6, d.width / 6);
+            
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString(toString(), d.height / 3, ((d.width / 4)));
+            
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Highscores:", d.height / 5, ((d.width / 3)));
+            
+            for (Map.Entry<Integer, String> entry : highScores.entrySet()) {
 
                 g.setFont(new Font("Arial", Font.BOLD, 20));
-                g.drawString(toString(), 20, ((d.width / 2 - 24) + 48));
-                
-                for (Map.Entry<String, Integer> entry  : highScores.entrySet()) {
-                    
-                    g.setFont(new Font("Arial", Font.BOLD, 20));
-                  g.drawString(entry.toString(), 20, ((d.width / 2 - 24) + 64));
-                    System.out.println(entry.getKey() + entry.getValue());
-                    score = 0;
-                   
-                    }
-                return;
-            } else {
-
-                g.setColor(Color.red);
-                g.fillRect(0, 0, d.width, d.height);
-                g.setColor(Color.black);
-                g.setFont(new Font("Arial", Font.BOLD, 48));
-                g.drawString("Game Over!", 20, d.width / 2 - 24);
-                return;
+                g.drawString(entry.getKey().toString() + "   " + 
+                entry.getValue().toString(), (d.height / 2) + 20, ((d.width / 3) + 
+                        scoreListCount));
+                System.out.println(entry.getKey()+ entry.getValue());
+                score = 0;
+                scoreListCount += 20;
             }
+            scoreListCount =  0;
+            return;
         }
 
         // fill the background
@@ -229,25 +233,25 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
         }
 
     }
-    
-
 
     public boolean isItHighscore(int score) {
-     //   highScores.put("lena", 0);
-        
-//        for (Map.Entry<String, Integer> entry  : highScores.entrySet()) {
-//            if (entry.getValue() == null){
-//             //   highScores.put(playerName, score);
-//                return true;
-//            }
-//            else if (entry.getValue() < score) { 
-//            //    highScores.put(playerName, score);
-//                return  true;
-//            } 
-//        }
-//        return false; 
-        return true;
-       
+        // highScores.put("lena", 0);
+
+        if (highScores.size() <= 10) {
+            return true;
+        }
+
+        if (highScores.size() >= 10) {
+
+            if (highScores.firstKey() < score) {
+
+                highScores.remove(highScores.firstEntry());
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -267,11 +271,11 @@ public class GameSurface extends JPanel implements ActionListener, KeyListener {
 
     public int getScore() {
         return score;
-    } 
+    }
 
     @Override
     public String toString() {
-        return "You scored: " + score + "   Highscore: " + highScore;
+        return "You scored: " + score;
     }
 
     public void jump() {
