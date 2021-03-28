@@ -10,7 +10,7 @@ public class App {
     public static void main(String[] args) {
         JFrame main = new JFrame("Invaders");
 
-        GameSurface gs = new GameSurface(400, 400);
+        GameSurface gs = new GameSurface(400);
 
         main.setSize(400, 400);
         main.setResizable(false);
