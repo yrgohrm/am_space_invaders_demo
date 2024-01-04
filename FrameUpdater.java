@@ -39,7 +39,7 @@ public class FrameUpdater extends Thread {
             // busy wait the last ms to hit the time more exact
             while (System.nanoTime() < timeAtNextUpdate) {
                 // let other threads have a go at it if they so wish
-                yield();
+                Thread.yield();
             }
         }
     }
