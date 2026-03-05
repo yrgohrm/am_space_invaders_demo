@@ -42,6 +42,8 @@ public class GameSurface extends JPanel implements KeyListener {
     private Rectangle spaceShip;
     private transient BufferedImage shipImageSprite;
     private int shipImageSpriteCount;
+    private transient BufferedImage alienImageSprite;
+    private int alienImageSpriteCount;
 
     public GameSurface(final int width) {
         try (InputStream spriteStream = GameSurface.class.getResourceAsStream("/ship.png")) {
@@ -53,6 +55,17 @@ public class GameSurface extends JPanel implements KeyListener {
             this.shipImageSpriteCount = 0;
         } catch (IOException ex) {
             logger.log(Level.WARNING, "Unable to load image resource: /ship.png", ex);
+        }
+
+        try (InputStream alienStream = GameSurface.class.getResourceAsStream("/alien.png")) {
+            if (alienStream == null) {
+                logger.log(Level.WARNING, "Unable to load image resource: /alien.png");
+            } else {
+                this.alienImageSprite = ImageIO.read(alienStream);
+            }
+            this.alienImageSpriteCount = 0;
+        } catch (IOException ex) {
+            logger.log(Level.WARNING, "Unable to load image resource: /alien.png", ex);
         }
 
         this.gameOver = false;
@@ -96,8 +109,15 @@ public class GameSurface extends JPanel implements KeyListener {
 
         // draw the aliens
         for (Alien alien : aliens) {
-            g.setColor(Color.GREEN);
-            g.fillRect(alien.bounds.x, alien.bounds.y, alien.bounds.width, alien.bounds.height);
+            if (alienImageSprite != null) {
+                int offset = 10 * alienImageSpriteCount;
+                g.drawImage(alienImageSprite, alien.bounds.x, alien.bounds.y, 
+                        alien.bounds.x + alien.bounds.width, alien.bounds.y + alien.bounds.height,
+                        offset, 0, offset + 10, 10, null);
+            } else {
+                g.setColor(Color.GREEN);
+                g.fillRect(alien.bounds.x, alien.bounds.y, alien.bounds.width, alien.bounds.height);
+            }
         }
 
         // draw the space ship, as a cool image if it did load properly
@@ -133,6 +153,9 @@ public class GameSurface extends JPanel implements KeyListener {
 
         // update ship sprite
         shipImageSpriteCount = (time / 100) % 3;
+        
+        // update alien sprite
+        alienImageSpriteCount = (time / 150) % 3;
 
         final List<Alien> toRemove = new ArrayList<>();
 
