@@ -1,3 +1,5 @@
+package se.yrgo.game;
+
 import javax.swing.SwingUtilities;
 
 /**

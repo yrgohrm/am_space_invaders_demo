@@ -1,3 +1,5 @@
+package se.yrgo.game;
+
 import java.awt.Rectangle;
 
 // this class can be much improved, better encapsulation

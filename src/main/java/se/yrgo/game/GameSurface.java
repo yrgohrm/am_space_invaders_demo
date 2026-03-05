@@ -1,3 +1,5 @@
+package se.yrgo.game;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -7,8 +9,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -36,17 +38,21 @@ public class GameSurface extends JPanel implements KeyListener {
     private static final double ALIEN_PIXELS_PER_MS = 0.12;
     private transient FrameUpdater updater;
     private boolean gameOver;
-    private List<Alien> aliens;
+    private transient List<Alien> aliens;
     private Rectangle spaceShip;
     private transient BufferedImage shipImageSprite;
     private int shipImageSpriteCount;
 
     public GameSurface(final int width) {
-        try {
-            this.shipImageSprite = ImageIO.read(new File("ship.png"));
+        try (InputStream spriteStream = GameSurface.class.getResourceAsStream("/ship.png")) {
+            if (spriteStream == null) {
+                logger.log(Level.WARNING, "Unable to load image resource: /ship.png");
+            } else {
+                this.shipImageSprite = ImageIO.read(spriteStream);
+            }
             this.shipImageSpriteCount = 0;
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Unable to load image", ex);
+            logger.log(Level.WARNING, "Unable to load image resource: /ship.png", ex);
         }
 
         this.gameOver = false;
