@@ -3,6 +3,7 @@ package se.yrgo.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -33,9 +34,11 @@ import javax.swing.JPanel;
 public class GameSurface extends JPanel implements KeyListener {
     private static final long serialVersionUID = 6260582674762246325L;
     private static Logger logger = Logger.getLogger(GameSurface.class.getName());
-
-    // make some transient to get past boring serialization demands...
+    
     private static final double ALIEN_PIXELS_PER_MS = 0.12;
+    private static final int SCORE_PER_SECOND = 100;
+    
+    // make some transient to get past boring serialization demands...
     private transient FrameUpdater updater;
     private boolean gameOver;
     private transient List<Alien> aliens;
@@ -44,6 +47,7 @@ public class GameSurface extends JPanel implements KeyListener {
     private int shipImageSpriteCount;
     private transient BufferedImage alienImageSprite;
     private int alienImageSpriteCount;
+    private int score;
 
     public GameSurface(final int width) {
         try (InputStream spriteStream = GameSurface.class.getResourceAsStream("/ship.png")) {
@@ -71,6 +75,7 @@ public class GameSurface extends JPanel implements KeyListener {
         this.gameOver = false;
         this.aliens = new ArrayList<>();
         this.spaceShip = new Rectangle(20, width / 2 - 15, 46, 20);
+        this.score = 0;
 
         this.updater = new FrameUpdater(this, 60);
         this.updater.setDaemon(true); // it should not keep the app running
@@ -100,6 +105,7 @@ public class GameSurface extends JPanel implements KeyListener {
             g.setColor(Color.black);
             g.setFont(new Font("Arial", Font.BOLD, 48));
             g.drawString("Game over!", 20, d.width / 2 - 24);
+            drawScore(g, d, true);
             return;
         }
 
@@ -129,6 +135,22 @@ public class GameSurface extends JPanel implements KeyListener {
             g.setColor(Color.black);
             g.fillRect(spaceShip.x, spaceShip.y, spaceShip.width, spaceShip.height);
         }
+
+        drawScore(g, d, false);
+    }
+
+    private void drawScore(Graphics2D g, Dimension d, boolean gameOverBackground) {
+        final String scoreText = String.format("%07d", score);
+        final Font scoreFont = new Font("Monospaced", Font.BOLD, 15);
+        final int margin = 14;
+
+        g.setFont(scoreFont);
+        FontMetrics metrics = g.getFontMetrics(scoreFont);
+        int textX = d.width - metrics.stringWidth(scoreText) - margin;
+        int textY = margin + metrics.getAscent();
+
+        g.setColor(new Color(255, 230, 0));
+        g.drawString(scoreText, textX, textY);
     }
 
     public void update(int time) {
@@ -156,6 +178,9 @@ public class GameSurface extends JPanel implements KeyListener {
         
         // update alien sprite
         alienImageSpriteCount = (time / 150) % 3;
+
+        // time-based score gives predictable progression independent of frame rate.
+        score = (int)((time / 1000.0) * SCORE_PER_SECOND);
 
         final List<Alien> toRemove = new ArrayList<>();
 
